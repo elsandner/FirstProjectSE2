@@ -6,21 +6,64 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import java.net.*;
 import java.io.*;
+import java.util.Observable;
+
+import rx.Subscriber;
 
 public class MainActivity extends AppCompatActivity {
+
+    Button button;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        button=(Button)findViewById(R.id.btnRun);
+        button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                demoObservableFrom();
+
+            }
+        });
     }
 
+    private void demoObservableFrom() {
+
+        rx.Observable.from(new Integer[]{1,2,3}).subscribe(new Subscriber<Integer>(){
+
+            @Override
+            public void onCompleted() {
+                
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(Integer integer) {
+                Log.i("onNext",String.valueOf(integer));
+            }
+        });
+    }
+
+
+
+
+/*
 
    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
    public void onClick(View view){
@@ -34,46 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-
-
-
-
-
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private String askDate(){
-
-        String hostname = "time.nist.gov";
-        int port = 13;
-
-        try (Socket socket = new Socket(hostname, port)) {
-
-            InputStream input = socket.getInputStream();
-            InputStreamReader reader = new InputStreamReader(input);
-
-            int character;
-            StringBuilder data = new StringBuilder();
-
-            while ((character = reader.read()) != -1) {
-                data.append((char) character);
-            }
-
-            System.out.println(data);
-            return data.toString();
-
-
-        } catch (UnknownHostException ex) {
-
-            System.out.println("Server not found: " + ex.getMessage());
-
-        } catch (IOException ex) {
-
-            System.out.println("I/O error: " + ex.getMessage());
-        }
-
-        return "Hardcoded String TimeRequest";
-    }
-
+*/
 
 }
 
