@@ -9,15 +9,16 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button button;
+    Button button1;
+    Button button2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        button=findViewById(R.id.btnSend);
-        button.setOnClickListener(new View.OnClickListener(){
+        button1=findViewById(R.id.btnSend);
+        button1.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
 
@@ -34,21 +35,20 @@ public class MainActivity extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
-                //Communicate with Server
-                TextView ServerAnswer = findViewById(R.id.ServerAnswer);
-                ServerAnswer.setText(myCon.getResponse());
+                printResult(myCon.getResponse());
             }
         });
 
-        button=findViewById(R.id.btnADS);
-        button.setOnClickListener(new View.OnClickListener(){
+        //Alternating Digit Sum
+        button2=findViewById(R.id.btnADS);
+        button2.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 String StudentID=getSID();
                 int[] array = StringToIntArr(StudentID);
                 int ADS =0;
 
+                //Calculate ADS
                 for(int i=0;i<array.length;i++) {
                     if (i % 2 == 0) {
                         ADS += array[i];
@@ -57,17 +57,18 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
 
+                //Output
                 String result;
-                if(ADS%2==0){
+                if(array.length!=8){
+                    result="This is not a valid Student ID!";
+                }
+                else if(ADS%2==0){
                     result="The alternating digit sum is an even number!";
                 }
                 else{
                     result="The alternating digit sum is an odd number!";
                 }
-
-
-                TextView ServerAnswer = findViewById(R.id.ServerAnswer);
-                ServerAnswer.setText(result);
+                printResult(result);
             }
         });
 
@@ -76,6 +77,11 @@ public class MainActivity extends AppCompatActivity {
     private String getSID(){
         final EditText inputSID = findViewById(R.id.StudentID);
         return inputSID.getText().toString();
+    }
+
+    private void printResult(String result){
+        TextView output = findViewById(R.id.tvOutput);
+        output.setText(result);
     }
 
     private int[] StringToIntArr(String str){

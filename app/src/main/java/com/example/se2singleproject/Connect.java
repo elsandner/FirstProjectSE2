@@ -1,8 +1,6 @@
 package com.example.se2singleproject;
 
 import android.os.Build;
-import android.widget.TextView;
-
 import androidx.annotation.RequiresApi;
 
 import java.net.*;
@@ -26,29 +24,27 @@ public class Connect implements java.lang.Runnable{
 
         try (Socket socket = new Socket(hostname, port)) {
 
+            //send StudentID to the Server
             OutputStream output = socket.getOutputStream();
             PrintWriter writer = new PrintWriter(output, true);
-            writer.println(sid);
+            writer.println(sid); //Sends Bytestream to the Server
 
-            //Single response
+            //Read the Response
             InputStream input = socket.getInputStream();
             InputStreamReader reader = new InputStreamReader(input);
 
+            //Build String
             int character;
             StringBuilder data = new StringBuilder();
-
             while ((character = reader.read()) != -1) {
-                data.append((char) character);
+                data.append((char) character);  //append = hinzufügen
             }
-
             response=data.toString();
 
         } catch (UnknownHostException ex) {
-
             System.out.println("Server not found: " + ex.getMessage());
 
         } catch (IOException ex) {
-
             System.out.println("I/O error: " + ex.getMessage());
         }
     }
